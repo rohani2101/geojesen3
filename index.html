@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-g">
+        <Mmeta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Desaku</title>
+            <link rel="stylesheet" href="assets/leaflet/leaflet.css">
+            <script src="assets/leaflet/leaflet.js"></script>
+            <script src="assets/geojesen/AR-BAREBALI.js"></script>
+            <script src="assets/geojesen/LINE-BARABALI.js"></script>
+            
+            <style>
+                html,body{
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+                #map{
+                    height: 100%;
+                }
+            </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+    //marker pemerintah
+    var desaIcon = L.icon({
+    iconUrl: "assets/images/desa.png",
+    iconSize:     [38, 38], 
+    iconAnchor:   [22, 34], 
+    popupAnchor:  [-3, -36] 
+});
+    var kantor_desa = L.marker([-8.626076861515946, 116.30864863648202],{icon: desaIcon}).bindPopup("Kantor Desa barabali");
+    //    kantor_camat = L.marker([-8.617935715585265, 116.38358901205451]).bindPopup("kantor_camat");
+    var Pemerintahan = L.layerGroup([kantor_desa,]);
+
+    // // menampilkan Fasilitas Pendidikan (SD, SMP, SMK, dll)
+    var greenIcon = L.icon({
+    iconUrl: "assets/images/sekolah.png",
+    iconSize:     [38, 38], 
+    iconAnchor:   [22, 34], 
+    popupAnchor:  [-3, -36] 
+});
+    var sdn_sade = L.marker([-8.638202891565925, 116.3071848285337],{icon:greenIcon}).bindPopup("SDN SADE"),
+       sdn_barabali = L.marker([-8.625040148910532, 116.30757108010417],{icon:greenIcon}).bindPopup("SDN BARABALIN"),
+       sdn_surabaya = L.marker([-8.633631982339876, 116.31457692328617],{icon:greenIcon}).bindPopup("SDN SURABAYA"),
+       sdn_lendang_terong = L.marker([-8.626037106819235, 116.32552033607156],{icon:greenIcon}).bindPopup("SDNLENDANG TERONG"),
+       sdn_penakak= L.marker([-8.639784143929305, 116.31732350575709],{icon:greenIcon}).bindPopup("SDN PENAKAK"),
+      smp_5_batukliang = L.marker([-8.633892691148723, 116.31135706271554],{icon:greenIcon}).bindPopup("SMPN 5 BATUKLIANG"),
+      smp_almaarif = L.marker([-8.622012379710306, 116.32088426861995],{icon:greenIcon}).bindPopup("SMP ALLMAARIF"),
+       ma_sabilurrosyad = L.marker([-8.627196768770872, 116.32168655042682],{icon:greenIcon}).bindPopup("MA SYABILUROSYAD");
+    var Pendidikan =L.layerGroup([sdn_sade, sdn_barabali,sdn_surabaya,sdn_lendang_terong,sdn_penakak,smp_5_batukliang,smp_almaarif,ma_sabilurrosyad]);
+
+    // // menampilkan Fasilitas Ibadah
+    var ibadahIcon = L.icon({
+    iconUrl: "assets/images/masjid.png",
+    iconSize:     [38, 38], 
+    iconAnchor:   [22, 34], 
+    popupAnchor:  [-3, -36] 
+});
+    var Masjid = L.marker([-8.625764079205547, 116.30811532058489],{icon: ibadahIcon}).bindPopup("MASJIDBARABALI"),
+       Masjid_perako = L.marker([-8.6321943024516, 116.30542695469612],{icon: ibadahIcon}).bindPopup("MASJID PERAKO"),
+       Masjid_surabaya = L.marker([-8.635673990506099, 116.31503926032391],{icon: ibadahIcon}).bindPopup("MASJID SURABAYA"),
+       Masjid_ripin= L.marker([-8.630721969860609, 116.30958009100777],{icon: ibadahIcon}).bindPopup("MASJID RIPIN"),
+       Masjid_surung = L.marker([-8.631825131977676, 116.31391454069208],{icon: ibadahIcon}).bindPopup("MASJID SURUNG"),
+       Masjid_tojak= L.marker([-8.637716688618484, 116.30321079724257],{icon: ibadahIcon}).bindPopup("MASJID TOJAK");
+    var Ibadah =L.layerGroup([Masjid,Masjid_perako,Masjid_surabaya,Masjid_ripin,Masjid_surung,Masjid_tojak]);
+
+    // menampilan marker umum
+    var umumIcon = L.icon({
+        iconUrl: "assets/images/pasar.png",
+        iconSize:     [38, 38], 
+        iconAnchor:   [22, 34], 
+        popupAnchor:  [-3, -36] 
+    });
+    var apotikIcon = L.icon({
+        iconUrl: "assets/images/apotik.png",
+        iconSize:     [38, 38], 
+        iconAnchor:   [22, 34], 
+        popupAnchor:  [-3, -36] 
+    });
+    var pasar = L.marker([-8.625591274889546, 116.30903467030735],{icon: umumIcon}).bindPopup("PASAR BARABALI"),
+        pasar_hewan = L.marker([-8.626270153464658, 116.30800470210147],{icon: umumIcon}).bindPopup("PASAR HEWAN BARABALI"),
+       apotik= L.marker([-8.626831457247022, 116.30852831629737],{icon: apotikIcon}).bindPopup("APOTIK");
+    var umum =L.layerGroup([pasar,pasar_hewan,apotik]);
+       
+   
+    const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Made with <i class="fa fa-heart text-danger"></i> by <a href="https://jihadul4kbar.github.io/" target="_blank">Jihadul Akbar</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+        const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: 'Made with <i class="fa fa-heart text-danger"></i> by <a href="https://jihadul4kbar.github.io/" target="_blank">Jihadul Akbar</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Made with <i class="fa fa-heart text-danger"></i> by <a href="https://jihadul4kbar.github.io/" target="_blank">Jihadul Akbar</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+         });
+
+         const map = L.map('map', {
+            center: [-8.6212133,116.3062986], 
+            zoom:15,
+            layers:[osm, Pemerintahan]
+         });
+         const baseMaps = {
+            "Basepeta": osm,
+            "OpenStreetMap.HOT": osmHOT,
+            "Satellite": satellite
+         };
+         const overlayMaps = {
+            "pemerintahan": Pemerintahan,
+            "pendidikan" : Pendidikan,
+            "ibadah" : Ibadah,
+            "umum" : umum,
+         };
+
+         const layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+         var Barabali = L.geoJSON([Barabali], {
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		}
+	}).addTo(map);
+     // const map = L.map('map').setView([-8.733494,116.4263976], 13);
+        
+        // const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     maxZoom: 19,
+        //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        // }).addTo(map);
+     // menampilkan data batas desa atau lurah
+
+        </script>
+        </body>
+        </html>
